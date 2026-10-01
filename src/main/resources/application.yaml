@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: ms-busqueda
+server:
+  port: ${BUSQUEDA_PORT:8083}
+articulos:
+  base-url: ${ARTICULOS_BASE_URL:http://localhost:8082}
