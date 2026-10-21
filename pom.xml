@@ -10,7 +10,7 @@
     </parent>
     <groupId>cl.duoc.bodegaexpress</groupId>
     <artifactId>ms-busqueda</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0</version>
     <name>ms-busqueda</name>
     <properties><java.version>17</java.version></properties>
     <dependencies>
@@ -24,7 +24,9 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    <build><plugins><plugin>
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <plugins><plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
     </plugin></plugins></build>

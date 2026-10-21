@@ -55,7 +55,7 @@ $env:ARTICULOS_BASE_URL = "http://localhost:9082"
 .\mvnw.cmd clean install
 ```
 
-Ejecuta las pruebas y genera el archivo `target/ms-busqueda-0.0.1-SNAPSHOT.jar`.
+Ejecuta las pruebas y genera el archivo `target/ms-busqueda.jar`.
 Las pruebas simulan las respuestas de ms-articulos, por lo que no requieren otros
 servicios en ejecución.
 
@@ -70,7 +70,7 @@ Iniciar primero ms-articulos. Luego, con Maven:
 O con el `.jar` generado:
 
 ```powershell
-java -jar target/ms-busqueda-0.0.1-SNAPSHOT.jar
+java -jar target/ms-busqueda.jar
 ```
 
 El servicio queda disponible en `http://localhost:8083/api/busqueda`.
