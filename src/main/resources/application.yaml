@@ -1,7 +1,11 @@
 spring:
   application:
     name: ms-busqueda
+  mvc:
+    problemdetails:
+      enabled: true
 server:
+  address: ${BUSQUEDA_ADDRESS:127.0.0.1}
   port: ${BUSQUEDA_PORT:8083}
 articulos:
   base-url: ${ARTICULOS_BASE_URL:http://localhost:8082}

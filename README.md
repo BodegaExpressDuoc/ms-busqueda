@@ -39,6 +39,7 @@ Todas las variables tienen un valor por defecto adecuado para ejecución local:
 
 | Variable | Obligatoria | Valor por defecto | Descripción |
 |---|---|---|---|
+| `BUSQUEDA_ADDRESS` | No | `127.0.0.1` | Dirección de red en la que escucha el servicio |
 | `BUSQUEDA_PORT` | No | `8083` | Puerto HTTP del servicio |
 | `ARTICULOS_BASE_URL` | No | `http://localhost:8082` | URL base de ms-articulos |
 
@@ -119,6 +120,22 @@ Respuesta de ejemplo:
 
 El tiempo máximo de espera hacia ms-articulos es de 3 segundos para conectar y
 5 segundos para leer la respuesta.
+
+### Formato de errores
+
+Los errores se devuelven en formato
+[ProblemDetail (RFC 9457)](https://www.rfc-editor.org/rfc/rfc9457), con el
+código HTTP y un mensaje descriptivo:
+
+```json
+{
+  "type": "about:blank",
+  "title": "Bad Request",
+  "status": 400,
+  "detail": "El nombre debe contener entre 1 y 150 caracteres",
+  "instance": "/api/busqueda"
+}
+```
 
 ## Pruebas manuales
 
