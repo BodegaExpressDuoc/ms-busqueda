@@ -145,6 +145,20 @@ código HTTP y un mensaje descriptivo:
 4. Enviar GET `http://localhost:8083/api/busqueda?nombre=` para obtener `400`.
 5. Detener ms-articulos y repetir el paso 3 para obtener `503`.
 
+## Pruebas con Postman
+
+El repositorio incluye la colección
+[`postman/ms-busqueda.postman_collection.json`](postman/ms-busqueda.postman_collection.json).
+
+1. En Postman, seleccionar **File → Import** y elegir el archivo de la colección.
+2. Iniciar el servicio, junto con ms-articulos (paso 4).
+3. Abrir la colección, seleccionar **Run** y ejecutar las peticiones en orden.
+
+Cada petición incluye pruebas automáticas que verifican el código HTTP y el
+contenido de la respuesta. La variable `baseUrl` de la colección define la URL
+del servicio. Para comprobar el error `503`, detener ms-articulos y repetir la
+petición 1.
+
 ## Servicios relacionados
 
 | Servicio | Puerto | Ruta base |

@@ -1,0 +1,77 @@
+{
+  "info": {
+    "name": "ms-busqueda",
+    "description": "Pruebas de la API de ms-busqueda. Requiere ms-articulos y este servicio en ejecución.\n\nPara comprobar el error 503, detener ms-articulos y repetir la petición 1.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Buscar artículos por nombre",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/busqueda?nombre=caja",
+        "description": "Devuelve los artículos cuyo nombre contiene el texto, sin distinguir mayúsculas. Con ms-articulos detenido responde 503 Service Unavailable."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Responde 200 OK', () => pm.response.to.have.status(200));",
+              "pm.test('Devuelve una lista', () => pm.expect(pm.response.json()).to.be.an('array'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Buscar con nombre vacío",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/busqueda?nombre="
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Responde 400 Bad Request', () => pm.response.to.have.status(400));",
+              "pm.test('Error en formato ProblemDetail', () => pm.expect(pm.response.json()).to.have.property('detail'));",
+              "pm.test('Indica el largo permitido', () => pm.expect(pm.response.json().detail).to.eql('El nombre debe contener entre 1 y 150 caracteres'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Buscar sin parámetro nombre",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/busqueda"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Responde 400 Bad Request', () => pm.response.to.have.status(400));",
+              "pm.test('Error en formato ProblemDetail', () => pm.expect(pm.response.json()).to.have.property('detail'));"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8083"
+    }
+  ]
+}
