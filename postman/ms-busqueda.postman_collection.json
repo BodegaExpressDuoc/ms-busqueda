@@ -10,7 +10,7 @@
       "request": {
         "method": "GET",
         "header": [],
-        "url": "{{baseUrl}}/api/busqueda?nombre=caja",
+        "url": "{{baseUrl}}/api/v1/busqueda?nombre=caja",
         "description": "Devuelve los artículos cuyo nombre contiene el texto, sin distinguir mayúsculas. Con ms-articulos detenido responde 503 Service Unavailable."
       },
       "event": [
@@ -31,7 +31,7 @@
       "request": {
         "method": "GET",
         "header": [],
-        "url": "{{baseUrl}}/api/busqueda?nombre="
+        "url": "{{baseUrl}}/api/v1/busqueda?nombre="
       },
       "event": [
         {
@@ -52,7 +52,7 @@
       "request": {
         "method": "GET",
         "header": [],
-        "url": "{{baseUrl}}/api/busqueda"
+        "url": "{{baseUrl}}/api/v1/busqueda"
       },
       "event": [
         {

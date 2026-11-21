@@ -27,7 +27,7 @@ public class BusquedaService {
         String termino = nombre.strip().toLowerCase(Locale.ROOT);
         List<ArticuloResponse> articulos;
         try {
-            articulos = articulosRestClient.get().uri("/api/articulos").retrieve()
+            articulos = articulosRestClient.get().uri("/api/v1/articulos").retrieve()
                     .body(new ParameterizedTypeReference<List<ArticuloResponse>>() {});
         } catch (RestClientException exception) {
             throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,

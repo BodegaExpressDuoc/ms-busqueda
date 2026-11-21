@@ -73,7 +73,7 @@ O con el `.jar` generado:
 java -jar target/ms-busqueda.jar
 ```
 
-El servicio queda disponible en `http://localhost:8083/api/busqueda`.
+El servicio queda disponible en `http://localhost:8083/api/v1/busqueda`.
 Para detenerlo, usar `Ctrl+C`.
 
 ## Estructura del proyecto
@@ -89,11 +89,11 @@ src/main/java/cl/duoc/bodegaexpress/busqueda/
 
 ## API
 
-URL base: `http://localhost:8083/api/busqueda`
+URL base: `http://localhost:8083/api/v1/busqueda`
 
 | Método | Ruta | Descripción | Respuesta |
 |---|---|---|---|
-| GET | `/api/busqueda?nombre={texto}` | Busca artículos cuyo nombre contenga el texto | `200` |
+| GET | `/api/v1/busqueda?nombre={texto}` | Busca artículos cuyo nombre contenga el texto | `200` |
 
 - La búsqueda es parcial y no distingue mayúsculas de minúsculas.
 - Se ignoran los espacios al inicio y al final del texto.
@@ -133,7 +133,7 @@ código HTTP y un mensaje descriptivo:
   "title": "Bad Request",
   "status": 400,
   "detail": "El nombre debe contener entre 1 y 150 caracteres",
-  "instance": "/api/busqueda"
+  "instance": "/api/v1/busqueda"
 }
 ```
 
@@ -141,8 +141,8 @@ código HTTP y un mensaje descriptivo:
 
 1. Iniciar ms-articulos y crear al menos un artículo.
 2. Iniciar este servicio (paso 4).
-3. Enviar GET `http://localhost:8083/api/busqueda?nombre=caja` y verificar los resultados.
-4. Enviar GET `http://localhost:8083/api/busqueda?nombre=` para obtener `400`.
+3. Enviar GET `http://localhost:8083/api/v1/busqueda?nombre=caja` y verificar los resultados.
+4. Enviar GET `http://localhost:8083/api/v1/busqueda?nombre=` para obtener `400`.
 5. Detener ms-articulos y repetir el paso 3 para obtener `503`.
 
 ## Pruebas con Postman
@@ -163,6 +163,6 @@ petición 1.
 
 | Servicio | Puerto | Ruta base |
 |---|---|---|
-| ms-usuarios | 8081 | `/api/usuarios` |
-| ms-articulos | 8082 | `/api/articulos` |
-| ms-busqueda | 8083 | `/api/busqueda` |
+| ms-usuarios | 8081 | `/api/v1/usuarios` |
+| ms-articulos | 8082 | `/api/v1/articulos` |
+| ms-busqueda | 8083 | `/api/v1/busqueda` |
