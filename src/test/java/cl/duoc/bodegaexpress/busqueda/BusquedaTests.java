@@ -35,9 +35,9 @@ class BusquedaTests {
 
     @Test
     void filtrarPorNombreSinDistinguirMayusculas() throws Exception {
-        server.expect(requestTo("http://articulos/api/articulos"))
+        server.expect(requestTo("http://articulos/api/v1/articulos"))
                 .andRespond(withSuccess(ARTICULOS, MediaType.APPLICATION_JSON));
-        mvc.perform(get("/api/busqueda").param("nombre", "  CAj  "))
+        mvc.perform(get("/api/v1/busqueda").param("nombre", "  CAj  "))
                 .andExpect(status().isOk()).andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$[0].id").value(1))
                 .andExpect(jsonPath("$[0].precio").value(2500.50))
@@ -47,18 +47,18 @@ class BusquedaTests {
 
     @Test
     void sinCoincidenciasDevuelveListaVacia() throws Exception {
-        server.expect(requestTo("http://articulos/api/articulos"))
+        server.expect(requestTo("http://articulos/api/v1/articulos"))
                 .andRespond(withSuccess(ARTICULOS, MediaType.APPLICATION_JSON));
-        mvc.perform(get("/api/busqueda").param("nombre", "inexistente"))
+        mvc.perform(get("/api/v1/busqueda").param("nombre", "inexistente"))
                 .andExpect(status().isOk()).andExpect(content().json("[]"));
         server.verify();
     }
 
     @Test
     void rechazarConsultaInvalidaSinConsultarArticulos() throws Exception {
-        mvc.perform(get("/api/busqueda")).andExpect(status().isBadRequest());
+        mvc.perform(get("/api/v1/busqueda")).andExpect(status().isBadRequest());
         for (String nombre : new String[]{"", "   ", "x".repeat(151)}) {
-            mvc.perform(get("/api/busqueda").param("nombre", nombre))
+            mvc.perform(get("/api/v1/busqueda").param("nombre", nombre))
                     .andExpect(status().isBadRequest());
         }
         server.verify();
@@ -66,25 +66,25 @@ class BusquedaTests {
 
     @Test
     void errorRemotoDevuelve503() throws Exception {
-        server.expect(requestTo("http://articulos/api/articulos")).andRespond(withServerError());
-        mvc.perform(get("/api/busqueda").param("nombre", "Caja"))
+        server.expect(requestTo("http://articulos/api/v1/articulos")).andRespond(withServerError());
+        mvc.perform(get("/api/v1/busqueda").param("nombre", "Caja"))
                 .andExpect(status().isServiceUnavailable());
         server.verify();
     }
 
     @Test
     void falloDeConexionDevuelve503() throws Exception {
-        server.expect(requestTo("http://articulos/api/articulos"))
+        server.expect(requestTo("http://articulos/api/v1/articulos"))
                 .andRespond(withException(new IOException("Conexion no disponible")));
-        mvc.perform(get("/api/busqueda").param("nombre", "Caja"))
+        mvc.perform(get("/api/v1/busqueda").param("nombre", "Caja"))
                 .andExpect(status().isServiceUnavailable());
         server.verify();
     }
 
     @Test
     void respuestaRemotaSinCuerpoDevuelve503() throws Exception {
-        server.expect(requestTo("http://articulos/api/articulos")).andRespond(withNoContent());
-        mvc.perform(get("/api/busqueda").param("nombre", "Caja"))
+        server.expect(requestTo("http://articulos/api/v1/articulos")).andRespond(withNoContent());
+        mvc.perform(get("/api/v1/busqueda").param("nombre", "Caja"))
                 .andExpect(status().isServiceUnavailable());
         server.verify();
     }
