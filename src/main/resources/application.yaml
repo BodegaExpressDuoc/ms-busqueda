@@ -9,3 +9,7 @@ server:
   port: ${BUSQUEDA_PORT:8083}
 articulos:
   base-url: ${ARTICULOS_BASE_URL:http://localhost:8082}
+gateway:
+  # Secreto del API Gateway (X-Gateway-Secret). Se exige en las peticiones entrantes y se envía
+  # a ms-articulos. Vacío = no se exige (local y tests).
+  secret: ${GATEWAY_SECRET:}

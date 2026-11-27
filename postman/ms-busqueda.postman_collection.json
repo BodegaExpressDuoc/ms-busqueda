@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "ms-busqueda",
-    "description": "Pruebas de la API de ms-busqueda. Requiere ms-articulos y este servicio en ejecución.\n\nPara comprobar el error 503, detener ms-articulos y repetir la petición 1.",
+    "description": "Pruebas de la API de ms-busqueda. Requiere ms-articulos y este servicio en ejecución.\n\nPara comprobar el error 503, detener ms-articulos y repetir la petición 1.\n\nUso local: `baseUrl` = http://localhost:8083 (o el puerto de tu .env); `token` se ignora.\nUso a través del AWS API Gateway: `baseUrl` = URL del Gateway y `token` = JWT obtenido en el login de ms-usuarios (la colección lo envía como Bearer).",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -72,6 +72,20 @@
     {
       "key": "baseUrl",
       "value": "http://localhost:8083"
+    },
+    {
+      "key": "token",
+      "value": ""
     }
-  ]
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  }
 }

@@ -42,6 +42,7 @@ Todas las variables tienen un valor por defecto adecuado para ejecución local:
 | `BUSQUEDA_ADDRESS` | No | `127.0.0.1` | Dirección de red en la que escucha el servicio |
 | `BUSQUEDA_PORT` | No | `8083` | Puerto HTTP del servicio |
 | `ARTICULOS_BASE_URL` | No | `http://localhost:8082` | URL base de ms-articulos |
+| `GATEWAY_SECRET` | No | vacío | Secreto que el AWS API Gateway envía en el header `X-Gateway-Secret`. Si está definido, se rechazan con 403 las peticiones que no lo traen, y se envía el mismo header en las llamadas a ms-articulos. Vacío = no se exige |
 
 Para cambiarlas, definirlas en la terminal antes de ejecutar. Por ejemplo, en PowerShell:
 
