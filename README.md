@@ -8,6 +8,7 @@ REST para buscar artículos por nombre, obteniendo los datos desde ms-articulos.
 - Java 17
 - Spring Boot 4.1.1 (Spring Web MVC, RestClient)
 - Maven (mediante Maven Wrapper)
+- Docker y GitHub Actions (despliegue en AWS)
 
 ## Requisitos previos
 
@@ -84,8 +85,9 @@ src/main/java/cl/duoc/bodegaexpress/busqueda/
 ├── MsBusquedaApplication.java   Punto de entrada de la aplicación
 ├── controller/                  Endpoints REST
 ├── service/                     Lógica de búsqueda
-├── config/                      Configuración del cliente HTTP hacia ms-articulos
-└── dto/                         Objetos de respuesta
+├── config/                      Cliente HTTP hacia ms-articulos (envía X-Gateway-Secret)
+├── dto/                         Objetos de respuesta
+└── seguridad/                   FiltroGateway (solo se entra por el API Gateway)
 ```
 
 ## API
@@ -159,6 +161,48 @@ Cada petición incluye pruebas automáticas que verifican el código HTTP y el
 contenido de la respuesta. La variable `baseUrl` de la colección define la URL
 del servicio. Para comprobar el error `503`, detener ms-articulos y repetir la
 petición 1.
+
+## Docker
+
+El `Dockerfile` es multi-stage:
+
+1. **Compilación:** `maven:3.9.9-eclipse-temurin-17` descarga las dependencias
+   (en una capa que queda en caché) y genera el jar.
+2. **Ejecución:** `eclipse-temurin:17-jre-alpine`, solo con el JRE y el jar, y
+   con un usuario sin privilegios (`app`). Expone el puerto 8083.
+
+```bash
+docker build -t ms-busqueda:local .
+```
+
+Para levantarlo junto con ms-articulos y los demás servicios se usa el
+`docker-compose.yml` de
+[bodegaexpress-infra](https://github.com/BodegaExpressDuoc/bodegaexpress-infra).
+
+## CI/CD y versiones
+
+El workflow [`.github/workflows/ci-cd.yml`](.github/workflows/ci-cd.yml) (GitHub Actions):
+
+| Evento | Jobs |
+|---|---|
+| Push a `develop` o pull request hacia `main` | `build-test`: compila y ejecuta las pruebas (`mvnw verify`) |
+| Push a `main` (merge del pull request) | `build-test` y luego `deploy` |
+
+El job `deploy`:
+
+1. crea el repositorio `ms-busqueda` en Amazon ECR si no existe;
+2. construye la imagen y la sube con tres tags: la versión del `pom.xml`
+   (por ejemplo `0.2.0`), el sha corto del commit y `latest`;
+3. ejecuta en la EC2, mediante AWS Systems Manager (SSM), el script `cicd.sh` de
+   bodegaexpress-infra, que descarga la imagen nueva y reinicia solo este servicio.
+
+La rama `main` está protegida: solo cambia mediante pull request desde `develop`.
+Cada entrega se marca con un tag anotado en `main`:
+
+| Versión | Tag | Entrega | Cambios principales |
+|---|---|---|---|
+| 0.1.0 | `v0.1.0` | Evaluación Parcial 2 | Búsqueda de artículos por nombre consultando ms-articulos |
+| 0.2.0 | `v0.2.0` | Evaluación Parcial 3 | Rutas `/api/v1`, Dockerfile, pipeline de despliegue en AWS y acceso solo a través del API Gateway (`FiltroGateway`) |
 
 ## Servicios relacionados
 
